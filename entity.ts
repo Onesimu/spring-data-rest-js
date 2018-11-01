@@ -501,6 +501,20 @@ export class Entity {
             enumerable: true
         })
     }
+
+    static init () {
+        const tableName = this.entityName.substring(0, this.entityName.length - 1).replace(/([A-Z])/g,"_$1").toLowerCase()
+        const find = alasql('SHOW TABLES').find(it => it.tableid == tableName)
+        const columns = alasql(`SHOW COLUMNS FROM ${tableName}`)
+        if(find && columns && columns[0]){
+            // console.log(`SHOW COLUMNS FROM ${tableName}`,columns)
+            columns.forEach(it => this.exposeProperty(toHump(it.columnid)))
+        } else {
+            request.get(entityConfig.restBaseURL + 'profile/' + this.entityName).send()
+                .then(profile => profile.alps.descriptor[0].descriptor.map(it => it.name)
+                    .forEach(it => this.exposeProperty(it)))
+        }
+    }
 }
 
 /**
@@ -515,7 +529,7 @@ export function extend(entity_name:string):typeof Entity {
      * spring data rest entity path
      */
     Class.entityName = entity_name;
-
+    Class.init()
     return Class;
 
 }

@@ -2,9 +2,12 @@
   "compilerOptions": {
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es5",
+    "target": "es2015",
     "sourceMap": true,
-    "declaration": true
+    "declaration": true,
+    "lib":["es2015.promise","es2015"],
+    "skipLibCheck":true,
+    "skipDefaultLibCheck":true
   },
   "exclude": [
     "node_modules"
