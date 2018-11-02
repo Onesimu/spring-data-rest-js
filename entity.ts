@@ -485,6 +485,19 @@ export class Entity {
         return request.deleteMethod(`${this.entityBaseURL()}/${id}`).send();
     }
 
+    static saveAll(data:{[key:string]:any}):Promise <{[key:string]:any}|void> {
+        return new Promise((resolve, reject) => {
+            request.post(this.entityBaseURL() + '/batch').jsonBody(data).send()
+            .then(json => {
+                // this.patchData(json);
+                // this.modifyFields = [];
+                resolve(json);
+            }).catch(err=> {
+                reject(err);
+            })
+        });
+    }
+
     /**
      * expose entity instance properties in _data to entity itself use Object.defineProperty getter and setter
      * after expose,you can access property in entity by entity.property rather than access by entity.data().property

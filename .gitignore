@@ -9,4 +9,4 @@ typings/
 !webpack.production.config.js
 !test/spring.test.js
 !node-fetch.d.ts
-!dist/*
+dist/*
